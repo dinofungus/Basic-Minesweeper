@@ -1,0 +1,9 @@
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\bin\Debug\BasicMinesweeper.exe.config
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\bin\Debug\BasicMinesweeper.exe
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\bin\Debug\BasicMinesweeper.pdb
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.csprojResolveAssemblyReference.cache
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.Form1.resources
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.Properties.Resources.resources
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.csproj.GenerateResource.Cache
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.exe
+c:\users\angus\documents\visual studio 2017\Projects\BasicMinesweeper\BasicMinesweeper\obj\Debug\BasicMinesweeper.pdb
