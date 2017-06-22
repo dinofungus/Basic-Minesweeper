@@ -28,6 +28,9 @@ namespace BasicMinesweeper
         //Count of mines to be displayed
         int mines = 0;
 
+        //Timer for counting ticks to refresh
+        Timer timer = new Timer();
+
         //Stopwatch for counting time elapsed
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
@@ -48,12 +51,20 @@ namespace BasicMinesweeper
             gameArea.Show();
             Reset();
 
+            timer.Interval = 1000;
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            lblTime.Text = "Time: " + (int)stopwatch.Elapsed.TotalSeconds + "s";
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             lblMines.Text = "Mines: " + mines + "/10";
-            lblTime.Text = "Time: " + (int)stopwatch.Elapsed.TotalSeconds + "." + stopwatch.Elapsed.Milliseconds + "s";
+            
 
             //Get graphics for gameArea
             Graphics gr = gameArea.CreateGraphics();
