@@ -124,43 +124,16 @@ namespace BasicMinesweeper
 
             //Assign guide numbers
             for (int i = 0; i < uncovered.Length; i++)
-            {
-                bool top = (i < 9);
-                bool bottom = (i > 71);
-                bool left = (i % 9 == 0);
-                bool right = (i % 9 == 8);
-
-                if (!top && !left && isBomb[i - 10])
+            {                
+                for (int j = 0; j < 9; j++)
                 {
-                    guideValue[i]++;
-                }
-                if (!top && isBomb[i - 9])
-                {
-                    guideValue[i]++;
-                }
-                if (!top && !right && isBomb[i - 8])
-                {
-                    guideValue[i]++;
-                }
-                if (!left && isBomb[i - 1])
-                {
-                    guideValue[i]++;
-                }
-                if (!right && isBomb[i + 1])
-                {
-                    guideValue[i]++;
-                }
-                if (!bottom && !left && isBomb[i + 8])
-                {
-                    guideValue[i]++;
-                }
-                if (!bottom && isBomb[i + 9])
-                {
-                    guideValue[i]++;
-                }
-                if (!bottom && !right && isBomb[i + 10])
-                {
-                    guideValue[i]++;
+                    int modifier = (j / 3 - 1) * 9 + (j % 3 - 1);
+                    int value = i + modifier;
+                    int rowDiff = Math.Abs(i % 9 - value % 9);
+                    if (value >= 0 && value < 81 && rowDiff < 2 && isBomb[value])
+                    {
+                        guideValue[i]++;
+                    }
                 }
 
                 //Debug code to check minefields
@@ -240,15 +213,45 @@ namespace BasicMinesweeper
                 {
                     Uncover(cell);
                 }
-                //If all non-bomb cells are uncovered the player wins
-                if (CheckWin())
+
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                int testValue = 0;
+                //Make sure all surrounding bombs are flagged
+                for (int i = 0; i < 9; i++)
                 {
-                    MessageBox.Show("You win");
-                    Reset();
+                    int modifier = (i / 3 - 1) * 9 + (i % 3 - 1);
+                    int value = cell + modifier;
+                    int rowDiff = Math.Abs(cell % 9 - value % 9);
+                    if (value >= 0 && value < 81 && rowDiff < 2 && flagged[value])
+                    {
+                        testValue++;
+                    }
+                }
+                if (testValue == guideValue[cell])
+                {
+                    //Clear all remaining surrounding tiles
+                    for (int i = 0; i < 9; i++)
+                    {
+                        int modifier = (i / 3 - 1) * 9 + (i % 3 - 1);
+                        int value = cell + modifier;
+                        int rowDiff = Math.Abs(cell % 9 - value % 9);
+                        if (value >= 0 && value < 81 && rowDiff < 2 && !uncovered[value])
+                        {
+                            Uncover(value);
+                        }
+                    }
                 }
             }
+            //If all non-bomb cells are uncovered the player wins
+            if (CheckWin())
+            {
+                MessageBox.Show("You win");
+                Reset();
+            }
 
-            
+
 
             Form1_Paint(this, null);
 
