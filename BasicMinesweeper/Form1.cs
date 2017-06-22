@@ -12,8 +12,12 @@ namespace BasicMinesweeper
 {
     public partial class Form1 : Form
     {
+        
         //Panel for game to be played on
         Panel gameArea = new Panel();
+
+        //Is the game active?
+        bool active = false;
 
         //Arrays for cell data
         bool[] isBomb = new bool[81];
@@ -21,7 +25,11 @@ namespace BasicMinesweeper
         bool[] flagged = new bool[81];
         int[] guideValue = new int[81];
 
+        //Count of mines to be displayed
         int mines = 0;
+
+        //Stopwatch for counting time elapsed
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
         //Random number generator
         Random random = new Random();
@@ -44,7 +52,8 @@ namespace BasicMinesweeper
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            lblMines.Text = ("Mines: " + mines + "/10");
+            lblMines.Text = "Mines: " + mines + "/10";
+            lblTime.Text = "Time: " + stopwatch.Elapsed.Seconds + "." + stopwatch.Elapsed.Milliseconds + "s";
 
             //Get graphics for gameArea
             Graphics gr = gameArea.CreateGraphics();
@@ -108,6 +117,8 @@ namespace BasicMinesweeper
                 flagged[i] = false;
                 guideValue[i] = 0;
                 mines = 0;
+                stopwatch.Reset();
+                active = false;
             }
 
             //Assign 10 bombs
@@ -177,6 +188,12 @@ namespace BasicMinesweeper
             int posY = pos.Y / 30;
             int cell = (posY * 9) + posX;
 
+            if (!active)
+            {
+                active = true;
+                stopwatch.Start();                
+            }
+
             if (e.Button == MouseButtons.Right)
             {
                 if (!uncovered[cell])
@@ -200,22 +217,13 @@ namespace BasicMinesweeper
                 {
                     return;
                 }
-                //Tell the player and reset the game if they lose
-                /*else if (isBomb[cell] && !flagged[cell])
-                {
-                    uncovered[cell] = true;
-                    Form1_Paint(this, null);
-                    MessageBox.Show("You lose");
-                    Reset();
-                }*/
-                //otherwise uncover the clicked cell
                 else if (!flagged[cell])
                 {
                     Uncover(cell);
                 }
 
             }
-            else if (e.Button == MouseButtons.Middle)
+            else if (e.Button == MouseButtons.Middle && uncovered[cell])
             {
                 int testValue = 0;
                 //Make sure all surrounding bombs are flagged
@@ -252,7 +260,8 @@ namespace BasicMinesweeper
             //If all non-bomb cells are uncovered the player wins
             if (CheckWin())
             {
-                MessageBox.Show("You win");
+                stopwatch.Stop();
+                MessageBox.Show("You win: " + stopwatch.Elapsed.Seconds + "." + stopwatch.Elapsed.Milliseconds + "s");
                 Reset();
             }
 
@@ -280,6 +289,7 @@ namespace BasicMinesweeper
         {
             if (isBomb[cell] && !flagged[cell])
             {
+                stopwatch.Stop();
                 uncovered[cell] = true;
                 Form1_Paint(this, null);
                 MessageBox.Show("You lose");

@@ -52,6 +52,7 @@
             this.lblMines.Size = new System.Drawing.Size(110, 37);
             this.lblMines.TabIndex = 1;
             this.lblMines.Text = "Mines:";
+            this.lblMines.Visible = false;
             // 
             // btnReset
             // 
