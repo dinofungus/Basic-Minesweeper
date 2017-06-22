@@ -53,7 +53,7 @@ namespace BasicMinesweeper
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             lblMines.Text = "Mines: " + mines + "/10";
-            lblTime.Text = "Time: " + stopwatch.Elapsed.Seconds + "." + stopwatch.Elapsed.Milliseconds + "s";
+            lblTime.Text = "Time: " + (int)stopwatch.Elapsed.TotalSeconds + "." + stopwatch.Elapsed.Milliseconds + "s";
 
             //Get graphics for gameArea
             Graphics gr = gameArea.CreateGraphics();
@@ -261,7 +261,7 @@ namespace BasicMinesweeper
             if (CheckWin())
             {
                 stopwatch.Stop();
-                MessageBox.Show("You win: " + stopwatch.Elapsed.Seconds + "." + stopwatch.Elapsed.Milliseconds + "s");
+                MessageBox.Show("You win: " + (int)stopwatch.Elapsed.TotalSeconds + "." + stopwatch.Elapsed.Milliseconds + "s");
                 Reset();
             }
 
