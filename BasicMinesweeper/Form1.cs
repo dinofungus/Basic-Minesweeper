@@ -201,13 +201,13 @@ namespace BasicMinesweeper
                     return;
                 }
                 //Tell the player and reset the game if they lose
-                else if (isBomb[cell] && !flagged[cell])
+                /*else if (isBomb[cell] && !flagged[cell])
                 {
                     uncovered[cell] = true;
                     Form1_Paint(this, null);
                     MessageBox.Show("You lose");
                     Reset();
-                }
+                }*/
                 //otherwise uncover the clicked cell
                 else if (!flagged[cell])
                 {
@@ -234,12 +234,17 @@ namespace BasicMinesweeper
                     //Clear all remaining surrounding tiles
                     for (int i = 0; i < 9; i++)
                     {
+                        bool success = true;
                         int modifier = (i / 3 - 1) * 9 + (i % 3 - 1);
                         int value = cell + modifier;
                         int rowDiff = Math.Abs(cell % 9 - value % 9);
-                        if (value >= 0 && value < 81 && rowDiff < 2 && !uncovered[value])
+                        if (value >= 0 && value < 81 && rowDiff < 2 && !uncovered[value] && !flagged[value])
                         {
-                            Uncover(value);
+                            success = Uncover(value);
+                        }
+                        if (!success)
+                        {
+                            return;
                         }
                     }
                 }
@@ -271,22 +276,34 @@ namespace BasicMinesweeper
             return true;
         }
 
-        public void Uncover(int cell)
+        public bool Uncover(int cell)
         {
-            uncovered[cell] = true;
-            //If the cell is a 0, uncover all adjacent cells automatically
-            if (guideValue[cell] == 0)
+            if (isBomb[cell] && !flagged[cell])
             {
-                for (int i = 0; i < 9; i++)
+                uncovered[cell] = true;
+                Form1_Paint(this, null);
+                MessageBox.Show("You lose");
+                Reset();
+                return false;
+            }
+            else
+            {
+                uncovered[cell] = true;
+                //If the cell is a 0, uncover all adjacent cells automatically
+                if (guideValue[cell] == 0)
                 {
-                    int modifier = (i / 3 - 1) * 9 + (i % 3 - 1);
-                    int value = cell + modifier;
-                    int rowDiff = Math.Abs(cell % 9 - value % 9);
-                    if (value >= 0 && value < 81 && rowDiff < 2 && !uncovered[value])
+                    for (int i = 0; i < 9; i++)
                     {
-                        Uncover(cell + modifier);
+                        int modifier = (i / 3 - 1) * 9 + (i % 3 - 1);
+                        int value = cell + modifier;
+                        int rowDiff = Math.Abs(cell % 9 - value % 9);
+                        if (value >= 0 && value < 81 && rowDiff < 2 && !uncovered[value])
+                        {
+                            Uncover(cell + modifier);
+                        }
                     }
                 }
+                return true;
             }
             
         }
