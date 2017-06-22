@@ -87,7 +87,7 @@ namespace BasicMinesweeper
                         text = guideValue[i].ToString();
                     }
                     Brush br = new SolidBrush(Color.Black);
-                    Font font = new Font("Arial", 23);
+                    Font font = new Font("Arial", 22);
 
                     gr.DrawString(text, font, br, x, y);
                     br.Dispose();
@@ -208,8 +208,16 @@ namespace BasicMinesweeper
             {
                 if (!uncovered[cell])
                 {
-                    flagged[cell] = true;
-                    mines++;
+                    if (!flagged[cell])
+                    {
+                        flagged[cell] = true;
+                        mines++;
+                    }
+                    else
+                    {
+                        flagged[cell] = false;
+                        mines--;
+                    }
                 }
             }
             else if(e.Button == MouseButtons.Left)
